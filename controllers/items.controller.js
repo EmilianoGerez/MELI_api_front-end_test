@@ -12,8 +12,9 @@ exports.itemSearch = async (req, res) => {
 			const { results, filters } = dataObj;
 
 			// eslint-disable-next-line no-use-before-define
-			const items = parseItems(results);
-			const categories = parseCategories(filters);
+			const items = itemsMapper(results);
+			// eslint-disable-next-line no-use-before-define
+			const categories = categoriesMapper(filters);
 
 			const response = {
 				categories,
@@ -34,45 +35,130 @@ exports.itemSearch = async (req, res) => {
 	}
 };
 
-const parseItems = results => {
-	const firstResults = results.slice(0, 3);
+exports.getItem = async (req, res) => {
+	const { id } = req.params;
+	try {
+		const itemData = await rp(`${process.env.ML_BASE_URL}/items/${id}`);
+		const descriptionData = await rp(
+			`${process.env.ML_BASE_URL}/items/${id}/description`
+		);
+
+		try {
+			const dataObj = JSON.parse(itemData);
+
+			// eslint-disable-next-line no-use-before-define
+			const items = itemMapper(dataObj, true);
+
+			res.status(200).send(items);
+		} catch (err) {
+			throw new Error('Error en Json parser');
+		}
+	} catch (err) {
+		const response = CustomErrorInterface(
+			err.message || 'Error al obtener producto',
+			'error',
+			err
+		);
+		res.status(400).send(response);
+	}
+};
+
+const itemsMapper = results => {
+	const firstResults = results.slice(0, 4);
 
 	const items = firstResults.map(result => {
-		const {
-			id,
-			title,
-			price,
-			// eslint-disable-next-line camelcase
-			currency_id,
-			// eslint-disable-next-line camelcase
-			sold_quantity,
-			thumbnail,
-			condition,
-			// eslint-disable-next-line camelcase
-			shipping: { free_shipping },
-		} = result;
+		// const {
+		// 	id,
+		// 	title,
+		// 	price,
+		// 	// eslint-disable-next-line camelcase
+		// 	currency_id,
+		// 	// eslint-disable-next-line camelcase
+		// 	sold_quantity,
+		// 	thumbnail,
+		// 	condition,
+		// 	// eslint-disable-next-line camelcase
+		// 	shipping: { free_shipping },
+		// } = result;
 
-		const priceObj = {
-			currency: currency_id,
-			amount: price.split('.')[0], // FIXME: not a string
-			decimals: price.split('.')[1] || 0,
-		};
+		// const priceInt = Math.floor(price);
+		// const decimals = (price % 1).toFixed(2);
 
-		return {
-			id,
-			title,
-			price: priceObj,
-			picture: thumbnail,
-			condition,
-			free_shipping,
-			sold_quantity,
-		};
+		// const priceObj = {
+		// 	currency: currency_id,
+		// 	amount: priceInt,
+		// 	decimals,
+		// };
+
+		// return {
+		// 	id,
+		// 	title,
+		// 	price: priceObj,
+		// 	picture: thumbnail,
+		// 	condition,
+		// 	free_shipping,
+		// 	sold_quantity,
+		// };
+		return itemMapper(result);
 	});
 
 	return items;
 };
 
-const parseCategories = filters =>
+const itemMapper = (item, detail = false) => {
+	const {
+		id,
+		title,
+		price,
+		// eslint-disable-next-line camelcase
+		currency_id,
+		// eslint-disable-next-line camelcase
+		sold_quantity,
+		thumbnail,
+		condition,
+		// eslint-disable-next-line camelcase
+		shipping: { free_shipping },
+		pictures,
+	} = item;
+
+	const priceInt = Math.floor(price);
+	const decimals = (price % 1).toFixed(2);
+
+	const priceObj = {
+		currency: currency_id,
+		amount: priceInt,
+		decimals,
+	};
+
+	const itemFormated = {
+		id,
+		title,
+		price: priceObj,
+		picture: thumbnail,
+		condition,
+		free_shipping,
+	};
+
+	if (detail) {
+		// eslint-disable-next-line camelcase
+		itemFormated.sold_quantity = sold_quantity;
+		itemFormated.description = ''; // FIXME: get description
+		itemFormated.picture = pictureMapper(pictures);
+	}
+
+	return itemFormated;
+};
+
+const pictureMapper = pictures => {
+	try {
+		const picture = pictures.map(p => p.url).join('--');
+		return picture;
+	} catch (e) {
+		return '';
+	}
+};
+
+const categoriesMapper = filters =>
 	filters
 		.map(f => {
 			if (Array.isArray(f.values)) {
