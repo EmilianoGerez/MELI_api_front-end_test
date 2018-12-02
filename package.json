@@ -10,7 +10,8 @@
 	"scripts": {
 		"start": "set NODE_ENV=dev&&node ./bin/www",
 		"start-prod": "NODE_ENV=prod node ./bin/www",
-		"precommit": "lint-staged"
+		"precommit": "lint-staged",
+		"test": "mocha test/*.js --timeout 15000"
 	},
 	"lint-staged": {
 		"linters": {
@@ -35,6 +36,8 @@
 		"request-promise": "^4.2.2"
 	},
 	"devDependencies": {
+		"chai": "^4.2.0",
+		"chai-http": "^4.2.0",
 		"eslint": "^5.3.0",
 		"eslint-config-airbnb": "^17.1.0",
 		"eslint-config-airbnb-base": "^13.1.0",
@@ -46,6 +49,7 @@
 		"eslint-plugin-standard": "^4.0.0",
 		"husky": "^0.14.3",
 		"lint-staged": "^7.2.2",
+		"mocha": "^5.2.0",
 		"prettier": "^1.14.2",
 		"prettier-standard": "^8.0.1"
 	}
