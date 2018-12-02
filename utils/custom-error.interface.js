@@ -18,4 +18,4 @@ const CustomErrorInterface = (message, type, err) => {
 	};
 };
 
-module.exports.CustomErrorInterface = CustomErrorInterface;
+module.exports = { CustomErrorInterface };
