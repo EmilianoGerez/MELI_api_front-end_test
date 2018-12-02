@@ -6,21 +6,13 @@ const dev = {
 	app: {
 		port: 3000,
 	},
-	db: {
-		host: 'localhost',
-		port: 27017,
-		name: 'api_meli_dev',
-	},
+	db: {},
 };
 const prod = {
 	app: {
 		port: 3001,
 	},
-	db: {
-		host: 'localhost',
-		port: 27017,
-		name: 'api_meli_prod',
-	},
+	db: {},
 };
 
 const config = {

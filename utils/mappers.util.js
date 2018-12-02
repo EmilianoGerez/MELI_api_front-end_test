@@ -56,7 +56,7 @@ const itemMapper = (item, description, detail = false) => {
 
 const pictureMapper = pictures => {
 	try {
-		const picture = pictures.map(p => p.url).join('-*-');
+		const picture = pictures.map(p => p.url).join('-*-'); // concatenacion de imagenes, con la intencion de armar una galaria de imagenes
 		return picture;
 	} catch (e) {
 		return '';

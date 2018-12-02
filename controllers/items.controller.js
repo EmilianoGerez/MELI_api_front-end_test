@@ -44,11 +44,6 @@ exports.itemSearch = async (req, res) => {
 exports.getItem = async (req, res) => {
 	const { id } = req.params;
 	try {
-		// const itemData = await rp(`${process.env.ML_BASE_URL}/items/${id}`);
-		// const descriptionData = await rp(
-		// 	`${process.env.ML_BASE_URL}/items/${id}/description`
-		// );
-
 		const itemData = rp(`${process.env.ML_BASE_URL}/items/${id}`);
 		const descriptionData = rp(
 			`${process.env.ML_BASE_URL}/items/${id}/description`
