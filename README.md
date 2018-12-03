@@ -10,4 +10,4 @@ Run `npm run start-prod` on Linux.
 
 Run `npm run test` to execute the unit tests via Mocha.
 
-Pequeño test del end-point de busqueda.
+Small example for search items endpoint.
