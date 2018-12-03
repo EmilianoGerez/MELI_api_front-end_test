@@ -1,7 +1,8 @@
 const priceFormater = price => {
-	const priceWODecimals = Math.floor(price);
+	// const priceWODecimals = Math.floor(price);
 
-	return priceWODecimals.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+	// return priceWODecimals.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+	return Math.floor(price);
 };
 const getDecimals = num => {
 	const floatNum = (num % 1).toFixed(2);

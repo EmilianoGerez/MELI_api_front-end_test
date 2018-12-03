@@ -10,7 +10,7 @@ const dev = {
 };
 const prod = {
 	app: {
-		port: 3001,
+		port: 3000,
 	},
 	db: {},
 };
