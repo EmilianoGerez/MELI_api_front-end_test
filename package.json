@@ -9,6 +9,7 @@
 	},
 	"scripts": {
 		"start": "set NODE_ENV=dev&&node ./bin/www",
+		"start-dev": "NODE_ENV=dev node ./bin/www",
 		"start-prod": "NODE_ENV=prod node ./bin/www",
 		"precommit": "lint-staged",
 		"test": "mocha test/*.js --timeout 15000"
