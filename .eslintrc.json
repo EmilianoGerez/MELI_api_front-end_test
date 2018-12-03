@@ -1,0 +1,19 @@
+{
+	"extends": [
+		"airbnb",
+		"prettier",
+		"prettier/standard"
+	],
+	"plugins": [
+		"prettier"
+	],
+	"rules": {
+		"prettier/prettier": [
+			"error"
+		],
+		"linebreak-style": [
+			"error",
+			"unix"
+		]
+	}
+}
